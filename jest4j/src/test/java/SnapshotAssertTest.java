@@ -1,3 +1,4 @@
+import com.github.michaelloo35.jest4j.SnapshotAssert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import utils.TestClass;
