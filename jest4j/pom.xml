@@ -4,10 +4,28 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.github.michaelloo35</groupId>
+    <groupId>com.github.michaelloo35</groupId>
     <artifactId>jest4j</artifactId>
     <version>0.1.1</version>
-
+    <url>https://github.com/michaelloo35/Jest4J</url>
+    <licenses>
+        <license>
+            <name>Apache Version 2.0, January 2004</name>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <id>michaelloo35</id>
+            <name>Michał Matusiak</name>
+            <email>michaelloo35@gmail.com</email>
+        </developer>
+    </developers>
+    <scm>
+        <connection>scm:git:https://github.com/michaelloo35/Jest4J.git</connection>
+        <developerConnection>scm:git:git@github.com:michaelloo35/Jest4J.git</developerConnection>
+        <url>https://github.com/michaelloo35/Jest4J.git</url>
+    </scm>
     <dependencies>
         <dependency>
             <groupId>com.flipkart.zjsonpatch</groupId>
