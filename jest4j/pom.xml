@@ -6,11 +6,8 @@
 
     <groupId>io.github.michaelloo35</groupId>
     <artifactId>jest4j</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1</version>
 
-    <properties>
-        <!-- Use the latest version whenever possible. -->
-    </properties>
     <dependencies>
         <dependency>
             <groupId>com.flipkart.zjsonpatch</groupId>
