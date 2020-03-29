@@ -4,9 +4,9 @@ import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.flipkart.zjsonpatch.DiffFlags;
 import com.flipkart.zjsonpatch.JsonDiff;
-import org.assertj.core.api.Assertions;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +20,8 @@ public class SnapshotAssert {
     private final ObjectMapper objectMapper;
 
     public SnapshotAssert() {
-        this.objectMapper = new ObjectMapper();
+        objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new Jdk8Module());
     }
 
     public SnapshotAssert(ObjectMapper objectMapper) {
@@ -34,17 +35,19 @@ public class SnapshotAssert {
 
         if (!snapshot.exists()) {
             createSnapshot(object, snapshot);
-            Assertions.fail("Created snapshot under " + snapshot.getAbsolutePath() + " please verify its content");
-        } else {
 
+            throw new FailAfterInitialSnapshotGenerationException(
+                    "\n\nCreated snapshot under:\n" + snapshot.getAbsolutePath() + "\n\nPlease verify the results");
+        } else {
             JsonNode expected = objectMapper.readTree(snapshot);
             JsonNode actual = objectMapper.valueToTree(object);
             JsonNode diff = JsonDiff.asJson(expected, actual, DIFF_FLAGS);
-            Assertions.assertThat(diff)
-                    .withFailMessage(
-                            "Actual does not match snapshot\n" + snapshot.getAbsolutePath() + "\n\nDifferences:\n" +
-                                    prettyPrintJsonString(diff))
-                    .isEqualTo(objectMapper.readTree(EMPTY_ARRAY_JSON));
+
+            if (!diff.equals(objectMapper.readTree(EMPTY_ARRAY_JSON))) {
+                throw new AssertionFailureException(
+                        "\nActual does not match snapshot\n" + snapshot.getAbsolutePath() + "\n\nDifferences:\n" +
+                                prettyPrintJsonString(diff));
+            }
         }
     }
 

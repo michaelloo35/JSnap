@@ -19,7 +19,7 @@ public class SnapshotAssertTest {
 
         // given
 
-        TestClass test = new TestClass("sf", 4);
+        TestClass test = new TestClass("ab", 4);
         // when
 
         // then
