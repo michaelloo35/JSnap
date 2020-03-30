@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.flipkart.zjsonpatch.DiffFlags;
 import com.flipkart.zjsonpatch.JsonDiff;
 
@@ -22,6 +23,7 @@ public class SnapshotAssert {
     public SnapshotAssert() {
         objectMapper = new ObjectMapper();
         objectMapper.registerModule(new Jdk8Module());
+        objectMapper.registerModule(new JavaTimeModule());
     }
 
     public SnapshotAssert(ObjectMapper objectMapper) {
@@ -40,7 +42,7 @@ public class SnapshotAssert {
                     "\n\nCreated snapshot under:\n" + snapshot.getAbsolutePath() + "\n\nPlease verify the results");
         } else {
             JsonNode expected = objectMapper.readTree(snapshot);
-            JsonNode actual = objectMapper.valueToTree(object);
+            JsonNode actual = objectMapper.readTree(createEphemeralSnapshot(object));
             JsonNode diff = JsonDiff.asJson(expected, actual, DIFF_FLAGS);
 
             if (!diff.equals(objectMapper.readTree(EMPTY_ARRAY_JSON))) {
@@ -63,6 +65,11 @@ public class SnapshotAssert {
     private void createSnapshot(Object object, File snapshot) throws IOException {
         ObjectWriter writer = objectMapper.writer(new DefaultPrettyPrinter());
         writer.writeValue(snapshot, object);
+    }
+
+    private String createEphemeralSnapshot(Object object) throws IOException {
+        ObjectWriter writer = objectMapper.writer(new DefaultPrettyPrinter());
+        return writer.writeValueAsString(object);
     }
 
     private void createSnapshotsDirectoryIfMissing() {

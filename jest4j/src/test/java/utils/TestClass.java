@@ -1,9 +1,11 @@
 package utils;
 
+import java.time.Instant;
 import java.util.Optional;
 
 public class TestClass {
 
+    private Instant time = Instant.ofEpochSecond(1583017200);
     private int someNumber = 4;
     private Optional<String> someString;
 
@@ -18,5 +20,9 @@ public class TestClass {
 
     public Optional<String> getSomeString() {
         return someString;
+    }
+
+    public Instant getTime() {
+        return time;
     }
 }
