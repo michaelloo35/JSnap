@@ -6,7 +6,7 @@
 
     <groupId>com.github.michaelloo35</groupId>
     <artifactId>jest4j</artifactId>
-    <version>0.1.5</version>
+    <version>0.1.6</version>
     <url>https://github.com/michaelloo35/Jest4J</url>
     <licenses>
         <license>
@@ -91,29 +91,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.1.1</version>
-
-                <configuration>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                </configuration>
-
-                <executions>
-                    <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-
             </plugin>
         </plugins>
     </build>
