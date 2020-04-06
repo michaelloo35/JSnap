@@ -1,17 +1,19 @@
-import com.github.michaelloo35.jest4j.SnapshotAssert;
+import com.github.michaelloo35.jest4j.SnapshotAssertConfiguration;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import utils.TestClass;
 
 import java.io.IOException;
 
+import static com.github.michaelloo35.jest4j.SnapshotMatcher.expect;
+
 public class SnapshotAssertTest {
 
-    private SnapshotAssert snapshotAssert;
+    private SnapshotAssertConfiguration snapshotAssert;
 
     @BeforeClass
     public void setUp() {
-        snapshotAssert = new SnapshotAssert();
+        snapshotAssert = new SnapshotAssertConfiguration();
     }
 
     @Test
@@ -22,7 +24,8 @@ public class SnapshotAssertTest {
         TestClass test = new TestClass("ab", 4);
         // when
 
+        expect(test).toMatchSnapshot("test-snapshot");
         // then
-        snapshotAssert.assertThatMatchesWithSnapshot(test, "test-snapshot-v1");
+
     }
 }
