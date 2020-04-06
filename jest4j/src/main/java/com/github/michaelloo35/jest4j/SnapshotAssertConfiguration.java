@@ -13,6 +13,8 @@ import static java.lang.ThreadLocal.withInitial;
 public class SnapshotAssertConfiguration {
 
     static EnumSet<DiffFlags> DIFF_FLAGS = EnumSet.of(DiffFlags.ADD_ORIGINAL_VALUE_ON_REPLACE);
+    static String snapshotGenerationLocation = "./";
+
     private static final ThreadLocal<ObjectMapper> om = withInitial(() -> {
         ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
         objectMapper.registerModule(new Jdk8Module());
@@ -22,6 +24,10 @@ public class SnapshotAssertConfiguration {
 
     public static ObjectMapper getObjectMapper() {
         return om.get();
+    }
+
+    public static void setSnapshotGenerationLocation(String path) {
+        SnapshotAssertConfiguration.snapshotGenerationLocation = path;
     }
 }
 

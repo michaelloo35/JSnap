@@ -5,13 +5,16 @@ import com.flipkart.zjsonpatch.JsonDiff;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 import static com.github.michaelloo35.jest4j.SnapshotAssertConfiguration.DIFF_FLAGS;
 import static com.github.michaelloo35.jest4j.SnapshotAssertConfiguration.getObjectMapper;
+import static com.github.michaelloo35.jest4j.SnapshotAssertConfiguration.snapshotGenerationLocation;
 
 public class SnapshotMatcher implements MatchingStep {
 
     private static final String EMPTY_ARRAY_JSON = "[]";
+    public static final String RESOURCES_RELATIVE_SNAPSHOTS_DIRECTORY = "snapshots";
     private final Object actual;
 
     private SnapshotMatcher(Object actual) {
@@ -24,49 +27,46 @@ public class SnapshotMatcher implements MatchingStep {
 
     @Override
     public void toMatchSnapshot(String uniqueSnapshotFileName) {
+        String snapshotFileName = uniqueSnapshotFileName + ".json";
+        String resourcesRelativeSnapshotPath = RESOURCES_RELATIVE_SNAPSHOTS_DIRECTORY + '/' + snapshotFileName;
+
+        URL snapshotResource = getClass().getClassLoader().getResource(resourcesRelativeSnapshotPath);
+        if (snapshotResource != null) {
+            compareWithSnapshot(snapshotFileName, snapshotResource);
+        } else {
+            createSnapshotFile(snapshotFileName);
+        }
+    }
+
+    private void compareWithSnapshot(String snapshotFileName, URL snapshotResource) {
         try {
-            createSnapshotsDirectoryIfMissing();
+            JsonNode expected = null;
+            expected = getObjectMapper().readTree(snapshotResource);
 
-            File snapshot = new File(getSnapshotsPath() + '/' + uniqueSnapshotFileName + ".json");
+            JsonNode actual = getObjectMapper().readTree(getObjectMapper().writeValueAsString(this.actual));
+            JsonNode differences = JsonDiff.asJson(expected, actual, DIFF_FLAGS);
 
-            if (!snapshot.exists()) {
-                getObjectMapper().writeValue(snapshot, actual);
-
-                throw new FailAfterInitialSnapshotGenerationException(
-                        "\n\nCreated snapshot under:\n" + snapshot.getAbsolutePath() + "\n\nPlease verify the results");
-            } else {
-                JsonNode expected = getObjectMapper().readTree(snapshot);
-                JsonNode ephemeralActual = getObjectMapper().readTree(getObjectMapper().writeValueAsString(actual));
-                JsonNode diff = JsonDiff.asJson(expected, ephemeralActual, DIFF_FLAGS);
-
-                if (!diff.equals(getObjectMapper().readTree(EMPTY_ARRAY_JSON))) {
-                    throw new AssertionFailureException(
-                            "\nActual does not match snapshot\n" + snapshot.getAbsolutePath() + "\n\nDifferences:\n" +
-                                    prettyPrintJsonString(diff));
-                }
+            if (!differences.equals(getObjectMapper().readTree(EMPTY_ARRAY_JSON))) {
+                throw new AssertionFailureException(
+                        "\nActual does not match snapshot\n" + snapshotFileName +
+                                "\n\nDifferences:\n" + getObjectMapper().writeValueAsString(differences));
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private String prettyPrintJsonString(JsonNode jsonNode) {
+    private void createSnapshotFile(String snapshotFileName) {
         try {
-            Object json = getObjectMapper().readValue(jsonNode.toString(), Object.class);
-            return getObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(json);
-        } catch (Exception e) {
-            return "Sorry, pretty printing differences didn't work";
-        }
-    }
+            File generatedSnapshot = new File(snapshotGenerationLocation + snapshotFileName);
+            getObjectMapper().writeValue(generatedSnapshot, actual);
 
-    private void createSnapshotsDirectoryIfMissing() {
-        File files = new File(getSnapshotsPath());
-        if (!files.exists()) {
-            files.mkdir();
+            throw new FailAfterInitialSnapshotGenerationException(
+                    "\n\nCreated snapshot under:\n" + generatedSnapshot.getAbsolutePath() +
+                            "\n\nPlease verify the results and move them to:\n"
+                            + RESOURCES_RELATIVE_SNAPSHOTS_DIRECTORY + '/' + snapshotFileName);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-    }
-
-    private String getSnapshotsPath() {
-        return System.getProperty("user.dir") + "/src/test/snapshots";
     }
 }

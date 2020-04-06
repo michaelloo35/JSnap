@@ -6,7 +6,7 @@
 
     <groupId>com.github.michaelloo35</groupId>
     <artifactId>jest4j</artifactId>
-    <version>0.1.7</version>
+    <version>1.0.0</version>
     <url>https://github.com/michaelloo35/Jest4J</url>
     <licenses>
         <license>
