@@ -1,5 +1,6 @@
 package com.github.michaelloo35.jest4j;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.flipkart.zjsonpatch.JsonDiff;
 
@@ -10,7 +11,8 @@ import java.nio.file.Paths;
 
 import static com.github.michaelloo35.jest4j.SnapshotAssertConfiguration.DIFF_FLAGS;
 import static com.github.michaelloo35.jest4j.SnapshotAssertConfiguration.getObjectMapper;
-import static com.github.michaelloo35.jest4j.SnapshotAssertConfiguration.snapshotGenerationAbsolutePath;
+import static com.github.michaelloo35.jest4j.SnapshotAssertConfiguration.getResourcesPathUri;
+import static com.github.michaelloo35.jest4j.SnapshotAssertConfiguration.getSnapshotGenerationAbsolutePath;
 
 public class SnapshotMatcher implements MatchingStep {
 
@@ -36,13 +38,13 @@ public class SnapshotMatcher implements MatchingStep {
 
         URL snapshotResource = getClass().getClassLoader().getResource(resourcesRelativeSnapshotPathWithExtension);
         if (snapshotResource != null) {
-            compareWithExistingSnapshot(snapshotFileName, snapshotResource);
+            compareWithExistingSnapshot(resourcesRelativeSnapshotPathWithExtension, snapshotResource);
         } else {
             createSnapshotFile(snapshotFileName, resourcesRelativeSnapshotPathWithExtension);
         }
     }
 
-    private void compareWithExistingSnapshot(String snapshotFileName, URL snapshotResource) {
+    private void compareWithExistingSnapshot(String resourcesRelativeSnapshotPath, URL snapshotResource) {
         try {
             JsonNode expected = getObjectMapper().readTree(snapshotResource);
             JsonNode actual = getObjectMapper().readTree(getObjectMapper().writeValueAsString(this.actual));
@@ -50,8 +52,7 @@ public class SnapshotMatcher implements MatchingStep {
 
             if (!differences.equals(getObjectMapper().readTree(EMPTY_ARRAY_JSON))) {
                 throw new AssertionFailureException(
-                        "\nActual does not match expected\n" + snapshotFileName +
-                                "\n\nDifferences are:\n" + getObjectMapper().writeValueAsString(differences));
+                        prepareAssertionsFailureMessage(resourcesRelativeSnapshotPath, differences));
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -60,16 +61,34 @@ public class SnapshotMatcher implements MatchingStep {
 
     private void createSnapshotFile(String snapshotFileName, String resourcesRelativeSnapshotFilePathWithExtension) {
         try {
-            File generatedSnapshot = new File(snapshotGenerationAbsolutePath, snapshotFileName);
+            File generatedSnapshot = new File(getSnapshotGenerationAbsolutePath(), snapshotFileName);
             getObjectMapper().writeValue(generatedSnapshot, actual);
 
             throw new FailAfterInitialSnapshotGenerationException(
-                    "\n\nCreated snapshot under:\n" + generatedSnapshot.getAbsolutePath() +
-                            "\n\nPlease verify contents of snapshot and move it to path:\n"
-                            + resourcesRelativeSnapshotFilePathWithExtension +
-                            "\nwhich is relative to your resources directory.");
+                    prepareGeneratedSnapshotMessage(resourcesRelativeSnapshotFilePathWithExtension, generatedSnapshot));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private String prepareAssertionsFailureMessage(String resourcesRelativeSnapshotPath, JsonNode differences)
+            throws JsonProcessingException {
+        return "Returned value does not match snapshot"
+                + System.lineSeparator()
+                + getResourcesPathUri()
+                + resourcesRelativeSnapshotPath
+                + DiffPrettyPrinter.print(differences);
+    }
+
+    private String prepareGeneratedSnapshotMessage(String resourcesRelativeSnapshotFilePathWithExtension,
+            File generatedSnapshot) {
+        return System.lineSeparator() + System.lineSeparator()
+                + "Created snapshot under:" + System.lineSeparator() + generatedSnapshot.getAbsolutePath()
+                + System.lineSeparator() + System.lineSeparator()
+                + "Please verify contents of snapshot and move it to path:"
+                + System.lineSeparator()
+                + resourcesRelativeSnapshotFilePathWithExtension
+                + System.lineSeparator()
+                + "which is relative to your resources directory.";
     }
 }

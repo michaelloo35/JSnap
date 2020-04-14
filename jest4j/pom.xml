@@ -6,7 +6,7 @@
 
     <groupId>com.github.michaelloo35</groupId>
     <artifactId>jest4j</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <url>https://github.com/michaelloo35/Jest4J</url>
     <licenses>
         <license>
@@ -44,11 +44,6 @@
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.module</groupId>
-            <artifactId>jackson-module-afterburner</artifactId>
             <version>${jackson.version}</version>
         </dependency>
 
