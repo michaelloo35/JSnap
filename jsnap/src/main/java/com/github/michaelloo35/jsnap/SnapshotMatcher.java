@@ -28,11 +28,11 @@ public class SnapshotMatcher implements MatchingStep {
     }
 
     @Override
-    public void toMatchSnapshot(String resourcesRelativeSnapshotPath) {
+    public void toMatchSnapshot(String resourcesRelativePath) {
         String resourcesRelativeSnapshotPathWithExtension =
-                resourcesRelativeSnapshotPath.endsWith(".json")
-                        ? resourcesRelativeSnapshotPath
-                        : resourcesRelativeSnapshotPath + ".json";
+                resourcesRelativePath.endsWith(".json")
+                        ? resourcesRelativePath
+                        : resourcesRelativePath + ".json";
 
         String snapshotFileName = Paths.get(resourcesRelativeSnapshotPathWithExtension).getFileName().toString();
 
