@@ -85,10 +85,8 @@ public class SnapshotMatcher implements MatchingStep {
         return System.lineSeparator() + System.lineSeparator()
                 + "Created snapshot under:" + System.lineSeparator() + generatedSnapshot.getAbsolutePath()
                 + System.lineSeparator() + System.lineSeparator()
-                + "Please verify contents of snapshot and move it to path:"
+                + "Please verify contents of snapshot and move it to resources directory under relative path:"
                 + System.lineSeparator()
-                + resourcesRelativeSnapshotFilePathWithExtension
-                + System.lineSeparator()
-                + "which is relative to your resources directory.";
+                + resourcesRelativeSnapshotFilePathWithExtension;
     }
 }
