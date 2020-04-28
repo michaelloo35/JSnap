@@ -83,7 +83,8 @@ public class SnapshotMatcher implements MatchingStep {
     private String prepareGeneratedSnapshotMessage(String resourcesRelativeSnapshotFilePathWithExtension,
             File generatedSnapshot) {
         return System.lineSeparator() + System.lineSeparator()
-                + "Created snapshot under:" + System.lineSeparator() + generatedSnapshot.getAbsolutePath()
+                + "Created snapshot under: " + "file:" + File.separator + File.separator +
+                generatedSnapshot.getAbsolutePath()
                 + System.lineSeparator() + System.lineSeparator()
                 + "Please verify contents of snapshot and move it to resources directory under relative path:"
                 + System.lineSeparator()
