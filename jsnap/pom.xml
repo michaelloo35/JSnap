@@ -5,12 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.michaelloo35</groupId>
-    <artifactId>jest4j</artifactId>
-    <version>1.0.2</version>
-    <url>https://github.com/michaelloo35/Jest4J</url>
+    <artifactId>JSnap</artifactId>
+    <version>1.0.3</version>
+    <url>https://github.com/michaelloo35/JSnap</url>
     <licenses>
         <license>
-            <name>Apache Version 2.0, January 2004</name>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
@@ -23,12 +24,13 @@
             <id>michaelloo35</id>
             <name>Michał Matusiak</name>
             <email>michaelloo35@gmail.com</email>
+            <url>https://github.com/michaelloo35/</url>
         </developer>
     </developers>
     <scm>
-        <connection>scm:git:https://github.com/michaelloo35/Jest4J.git</connection>
-        <developerConnection>scm:git:git@github.com:michaelloo35/Jest4J.git</developerConnection>
-        <url>https://github.com/michaelloo35/Jest4J.git</url>
+        <connection>scm:git:https://github.com/michaelloo35/JSnap.git</connection>
+        <developerConnection>scm:git:git@github.com:michaelloo35/JSnap.git</developerConnection>
+        <url>https://github.com/michaelloo35/JSnap.git</url>
     </scm>
     <dependencies>
         <dependency>

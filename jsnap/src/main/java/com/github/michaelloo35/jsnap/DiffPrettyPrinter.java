@@ -1,9 +1,9 @@
-package com.github.michaelloo35.jest4j;
+package com.github.michaelloo35.jsnap;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 
-import static com.github.michaelloo35.jest4j.SnapshotAssertConfiguration.getObjectMapper;
+import static com.github.michaelloo35.jsnap.SnapshotAssertConfiguration.getObjectMapper;
 
 class DiffPrettyPrinter {
 

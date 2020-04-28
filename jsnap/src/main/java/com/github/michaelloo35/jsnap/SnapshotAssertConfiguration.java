@@ -1,4 +1,4 @@
-package com.github.michaelloo35.jest4j;
+package com.github.michaelloo35.jsnap;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;

@@ -1,4 +1,4 @@
-package com.github.michaelloo35.jest4j;
+package com.github.michaelloo35.jsnap;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -9,10 +9,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Paths;
 
-import static com.github.michaelloo35.jest4j.SnapshotAssertConfiguration.DIFF_FLAGS;
-import static com.github.michaelloo35.jest4j.SnapshotAssertConfiguration.getObjectMapper;
-import static com.github.michaelloo35.jest4j.SnapshotAssertConfiguration.getResourcesPathUri;
-import static com.github.michaelloo35.jest4j.SnapshotAssertConfiguration.getSnapshotGenerationAbsolutePath;
+import static com.github.michaelloo35.jsnap.SnapshotAssertConfiguration.DIFF_FLAGS;
+import static com.github.michaelloo35.jsnap.SnapshotAssertConfiguration.getObjectMapper;
+import static com.github.michaelloo35.jsnap.SnapshotAssertConfiguration.getResourcesPathUri;
+import static com.github.michaelloo35.jsnap.SnapshotAssertConfiguration.getSnapshotGenerationAbsolutePath;
 
 public class SnapshotMatcher implements MatchingStep {
 

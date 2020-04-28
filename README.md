@@ -1,4 +1,4 @@
-# Jest4J
+# JSnap
 Snapshot testing made for java
 
 * Framework agnostic
@@ -9,7 +9,7 @@ Snapshot testing made for java
 ## How to use it:
 1. Import the library
 ```java
-import com.github.michaelloo35.jest4j.SnapshotAssertConfiguration;
+import com.github.michaelloo35.jsnap.SnapshotAssertConfiguration;
 ```
 2. Configure path to resources directory relative to project root.
    For single module maven project it would be:
