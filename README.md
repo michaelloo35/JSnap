@@ -1,13 +1,15 @@
 # JSnap
-Snapshot testing made for java
+Snapshot testing library made for java. 
+Inspired by my frontend colleague. Let me quote "Seriously Do you really write all those assertions? Don't you have [Jest in java](https://jestjs.io/)
 ### Maven release
 [![](https://jitpack.io/v/michaelloo35/Jest4J.svg)](https://jitpack.io/#michaelloo35/Jest4J)
 
-keep it simple, silly!
+It is:
+* Simple
 * Framework agnostic
 * Lightweight
 * Verbose
-* Stupid simple to use cause remember 
+* Zero config ( well optionally you can write single line of configuration that will make your life helluva better
 
 ## How to use it:
 1. Import the library
